@@ -1,293 +1,319 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traditional Thai Massage</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#2b2620;--soft:#6f665a;--cream:#f6f1e7;--paper:#fbf8f1;
-    --jade:#5a7a63;--jade-deep:#3f5a48;--gold:#b08d4f;--gold-soft:#c9aa6d;--line:#e3dac9;
-    --serif:'Cormorant Garamond','Georgia',serif;
-    --sans:'Jost','Helvetica Neue',Arial,sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:var(--serif);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;
-    font-size:18px;
-    background:
-      radial-gradient(60% 40% at 80% 0%, rgba(176,141,79,.05), transparent 70%),
-      radial-gradient(50% 50% at 0% 100%, rgba(90,122,99,.05), transparent 70%),
-      var(--paper);
-  }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+<html lang="en" class=""><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOUR SPA NAME — Traditional Thai Spa, Pattaya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A96E; --deep: #1C1A17; --earth: #3D3228;
+      --warm: #F7F0E6; --muted: #9E8E7E; --accent: #7A5C3A;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--deep); color: var(--warm); font-weight: 300; }
 
-  /* ===== EDIT MODE ===== */
-  [data-edit]{cursor:text;border-radius:4px;transition:background .15s,box-shadow .15s}
-  body.editing [data-edit]{
-    background:rgba(176,141,79,.10);
-    box-shadow:0 0 0 1px rgba(176,141,79,.45);
-    outline:none;
-    min-width:24px;
-  }
-  body.editing [data-edit]:hover{background:rgba(176,141,79,.18)}
-  body.editing [data-edit]:focus{
-    background:#fff;
-    box-shadow:0 0 0 2px var(--gold);
-  }
-  /* editor bar */
-  .editbar{
-    position:fixed;left:0;right:0;bottom:0;z-index:200;
-    background:var(--ink);color:#f0e9da;
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-    padding:12px 22px;font-family:var(--sans);
-    box-shadow:0 -6px 24px rgba(0,0,0,.18);
-  }
-  .editbar .msg{font-size:.82rem;letter-spacing:.02em;color:#cfc7b9}
-  .editbar .msg b{color:var(--gold)}
-  .editbar .actions{display:flex;gap:10px;flex-shrink:0}
-  .eb-btn{
-    font-family:inherit;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-    border:none;border-radius:3px;padding:11px 20px;cursor:pointer;transition:.2s;
-  }
-  .eb-edit{background:var(--gold);color:#2b2620}
-  .eb-edit:hover{filter:brightness(1.08)}
-  .eb-save{background:var(--jade);color:#fff;display:none}
-  .eb-save:hover{background:var(--jade-deep)}
-  .eb-reset{background:transparent;color:#9b9382;border:1px solid #514a3f;display:none}
-  .eb-reset:hover{color:#fff;border-color:#7a7263}
-  body.editing .eb-edit{display:none}
-  body.editing .eb-save,body.editing .eb-reset{display:inline-block}
-  .toast{
-    position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);
-    background:var(--jade-deep);color:#fff;padding:12px 26px;border-radius:30px;
-    font-family:var(--sans);font-size:.8rem;letter-spacing:.05em;
-    opacity:0;pointer-events:none;transition:.3s;z-index:201;
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    /* EDIT MODE */
+    .edit-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: #111; border-bottom: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 2rem; gap: 1rem;
+    }
+    .edit-bar-left { display: flex; align-items: center; gap: 1rem; }
+    .edit-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .edit-hint { font-size: 0.7rem; color: var(--muted); }
+    .btn-save {
+      padding: 0.5rem 1.6rem; background: var(--gold); color: #111;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      border: none; cursor: pointer; font-family: 'Jost', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .btn-save:hover { opacity: 0.85; }
 
-  /* reveal on scroll */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s ease,transform 1s ease}
-  .reveal.in{opacity:1;transform:none}
+    /* editable elements highlight on hover */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    [contenteditable="true"]:hover {
+      background: rgba(201,169,110,0.08);
+      cursor: text;
+    }
+    [contenteditable="true"]:focus {
+      background: rgba(201,169,110,0.13);
+      box-shadow: 0 0 0 1px rgba(201,169,110,0.4);
+    }
 
-  nav{position:sticky;top:0;z-index:50;background:rgba(251,248,241,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px}
-  .logo{font-family:var(--sans);font-size:.74rem;font-weight:400;letter-spacing:.4em;text-transform:uppercase;color:var(--soft)}
-  .nav-links{display:flex;gap:38px;list-style:none}
-  .nav-links a{font-family:var(--sans);font-size:.74rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--soft);text-decoration:none;transition:color .2s;position:relative}
-  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .3s}
-  .nav-links a:hover{color:var(--jade-deep)}
-  .nav-links a:hover::after{width:100%}
-  .menu-btn{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--ink)}
+    /* NAV */
+    nav {
+      position: fixed; top: 42px; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: linear-gradient(to bottom, rgba(28,26,23,0.95), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(28,26,23,0.97); }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--gold); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--warm); text-decoration: none; opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-book {
+      font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 0.55rem 1.5rem; border: 1px solid var(--gold);
+      color: var(--gold); text-decoration: none; transition: all 0.25s;
+    }
+    .nav-book:hover { background: var(--gold); color: var(--deep); }
 
-  .hero{
-    position:relative;text-align:center;padding:160px 0 140px;overflow:hidden;
-    background:
-      radial-gradient(120% 80% at 50% 0%, rgba(90,122,99,.12), transparent 60%),
-      linear-gradient(180deg,#f9f3e8,var(--cream));
-    border-bottom:1px solid var(--line);
-  }
-  .hero::before,.hero::after{
-    content:"";position:absolute;width:340px;height:340px;border-radius:50%;
-    border:1px solid rgba(176,141,79,.18);opacity:.6;
-  }
-  .hero::before{top:-150px;left:-120px}
-  .hero::after{bottom:-170px;right:-130px;width:420px;height:420px}
-  .eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.46em;text-transform:uppercase;color:var(--gold);margin-bottom:30px;position:relative;z-index:1}
-  .hero h1{font-size:clamp(3rem,7vw,5.4rem);font-weight:500;line-height:1.04;letter-spacing:.005em;margin-bottom:28px;position:relative;z-index:1}
-  .hero h1 em{font-style:italic;font-weight:500;color:var(--jade-deep)}
-  .hero p{max-width:560px;margin:0 auto 42px;color:var(--soft);font-size:1.3rem;font-style:italic;position:relative;z-index:1}
-  .btn{display:inline-block;font-family:var(--sans);font-size:.74rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;padding:17px 44px;text-decoration:none;border-radius:2px;transition:.3s;position:relative;z-index:1}
-  .btn-primary{background:var(--jade-deep);color:var(--paper);box-shadow:0 8px 24px rgba(63,90,72,.22)}
-  .btn-primary:hover{background:var(--jade);transform:translateY(-3px);box-shadow:0 12px 30px rgba(63,90,72,.3)}
+    /* HERO */
+    .hero {
+      height: 100vh; min-height: 600px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #2a1f14 0%, #1C1A17 50%, #0f0d0b 100%);
+      padding-top: 80px;
+    }
+    .hero-ornament {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 520px; height: 520px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .lotus { width: 64px; margin-bottom: 1.8rem; opacity: 0.75; animation: floatUp 1.2s ease both; }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+      animation: floatUp 1s 0.2s ease both; opacity: 0;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: 0.04em;
+      animation: floatUp 1s 0.35s ease both; opacity: 0;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-tagline {
+      margin-top: 1.4rem; font-size: 0.92rem; letter-spacing: 0.12em; color: var(--muted);
+      animation: floatUp 1s 0.5s ease both; opacity: 0;
+    }
+    .hero-actions {
+      margin-top: 2.8rem; display: flex; gap: 1.2rem;
+      animation: floatUp 1s 0.65s ease both; opacity: 0;
+    }
+    .btn-primary {
+      padding: 0.85rem 2.4rem; background: var(--gold); color: var(--deep);
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline {
+      padding: 0.85rem 2.4rem; border: 1px solid rgba(201,169,110,0.5);
+      color: var(--warm); font-size: 0.78rem; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none; transition: all 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); animation: floatUp 1s 1s ease both; opacity: 0;
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: var(--gold); opacity: 0.5;
+      animation: scrollPulse 2s 1.5s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50% { transform: scaleY(0.5); opacity: 1; }
+    }
 
-  .mark{text-align:center;color:var(--gold);font-size:1.1rem;letter-spacing:.6em;padding:30px 0;display:flex;align-items:center;justify-content:center;gap:18px}
-  .mark::before,.mark::after{content:"";height:1px;width:60px;background:linear-gradient(90deg,transparent,var(--gold-soft))}
-  .mark::after{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+    /* ABOUT */
+    .about { display: block; }
+    .about-text {
+      padding: 5rem 8rem; display: flex; flex-direction: column; align-items: center;
+      text-align: center; background: var(--earth);
+    }
+    .section-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .about-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300; line-height: 1.2; margin-bottom: 1.6rem;
+    }
+    .about-text h2 em { font-style: italic; color: var(--gold); }
+    .about-text p {
+      font-size: 0.92rem; line-height: 1.85; color: rgba(247,240,230,0.75); margin-bottom: 1rem;
+    }
+    .about-stats {
+      display: flex; gap: 2.5rem; margin-top: 2.5rem;
+      padding-top: 2rem; border-top: 1px solid rgba(201,169,110,0.2);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.3rem;
+    }
 
-  section{padding:108px 0}
-  .label{font-family:var(--sans);font-size:.72rem;font-weight:400;letter-spacing:.36em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
-  .sec-title{font-size:clamp(2.4rem,4.5vw,3.4rem);font-weight:500;line-height:1.12;margin-bottom:26px}
-  .sec-title em{font-style:italic;color:var(--jade-deep)}
-  .about{text-align:center}
-  .about .inner{max-width:700px;margin:0 auto}
-  .about .sec-title{position:relative;display:inline-block;padding-bottom:22px;margin-bottom:34px}
-  .about .sec-title::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:56px;height:2px;background:var(--gold-soft)}
-  .about p{color:var(--soft);margin-bottom:20px;font-size:1.18rem}
+    /* BOOKING */
+    .booking { padding: 7rem 4rem; text-align: center; background: var(--earth); }
+    .booking h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; margin-bottom: 0.8rem;
+    }
+    .booking h2 em { font-style: italic; color: var(--gold); }
+    .booking > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem; }
+    .booking-options { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .booking-option {
+      padding: 1.5rem 2.5rem; border: 1px solid rgba(201,169,110,0.3);
+      text-align: left; min-width: 220px; transition: border-color 0.25s;
+      text-decoration: none; color: var(--warm); display: block;
+    }
+    .booking-option:hover { border-color: var(--gold); }
+    .booking-option-label {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .booking-option-title { font-size: 1rem; font-weight: 400; }
+    .booking-option-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
 
-  .quote{text-align:center;background:linear-gradient(180deg,var(--cream),#f3ecdd);border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
-  .quote::before{content:"\201C";position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:6rem;color:rgba(176,141,79,.25);line-height:1}
-  .quote blockquote{max-width:780px;margin:0 auto;font-size:clamp(1.7rem,3.6vw,2.5rem);font-style:italic;font-weight:500;line-height:1.45;color:var(--ink);padding-top:30px}
-  .quote .by{display:block;margin-top:34px;font-family:var(--sans);font-style:normal;font-size:.74rem;font-weight:400;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+    /* FOOTER */
+    footer {
+      padding: 3rem 4rem; border-top: 1px solid rgba(201,169,110,0.15);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600; color: var(--gold); letter-spacing: 0.1em;
+    }
+    .footer-info { font-size: 0.78rem; color: var(--muted); line-height: 1.8; }
+    .footer-copy { font-size: 0.72rem; color: rgba(158,142,126,0.5); }
 
-  .contact{text-align:center}
-  .info{display:grid;grid-template-columns:repeat(2,1fr);gap:0;max-width:640px;margin:56px auto 0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:rgba(255,255,255,.4)}
-  .info>div{padding:38px 24px;transition:background .25s}
-  .info>div:first-child{border-right:1px solid var(--line)}
-  .info>div:hover{background:rgba(255,255,255,.85)}
-  .info h4{font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-  .info p{color:var(--ink);line-height:1.9;font-size:1.3rem}
-  .hours{margin-top:48px;font-family:var(--sans);font-size:.82rem;font-weight:400;letter-spacing:.18em;color:var(--soft)}
-
-  footer{background:var(--ink);color:#cfc7b9;text-align:center;padding:56px 0}
-  footer .mark{color:var(--gold)}
-  footer .mark::before,footer .mark::after{display:none}
-  footer .copy{font-family:var(--sans);font-size:.68rem;font-weight:300;letter-spacing:.2em;text-transform:uppercase;margin-top:6px;color:#8a8273}
-  @media(max-width:820px){
-    body{font-size:17px}
-    .nav-links{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;gap:0;background:var(--paper);border-bottom:1px solid var(--line);padding:10px 0}
-    .nav-links.open{display:flex}
-    .nav-links li{padding:12px 28px}
-    .menu-btn{display:block}
-    .info{grid-template-columns:1fr}
-    .info>div:first-child{border-right:none;border-bottom:1px solid var(--line)}
-    section{padding:72px 0}
-    .hero{padding:120px 0 100px}
-    .editbar{flex-direction:column;gap:10px;align-items:stretch;text-align:center}
-    .editbar .actions{justify-content:center}
-  }
-</style>
-</head>
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; top: 42px; }
+      .nav-links { display: none; }
+      .about-text { padding: 3rem 2rem; }
+      .booking { padding: 4rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; text-align: center; }
+    }
+  </style>
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.zZZZhVqDDCw.L.W.O/am=BBCABg/d=0/rs=AN8SPfrkE3FGhJXryfBRpx1gYoqebAENWQ/m=el_main_css"></head>
 <body>
 
-<nav>
-  <div class="wrap nav-inner">
-    <div class="logo" data-edit data-key="logo">Traditional Thai Massage</div>
-    <ul class="nav-links" id="links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="menu-btn" onclick="document.getElementById('links').classList.toggle('open')">&#9776;</button>
-  </div>
+<!-- EDIT BAR -->
+
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled" style="top: 0px;">
+  <span class="nav-logo">Pattaya Sweetheart</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#booking">Book Now</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-book">Book Now</a>
 </nav>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow" data-edit data-key="eyebrow">In the Heart of Thailand</div>
-    <h1 data-edit data-key="headline">Where ancient hands<br>restore <em>body &amp; calm</em></h1>
-    <p data-edit data-key="hero">Write one warm sentence introducing your spa &mdash; what makes a visit here feel different.</p>
-    <a href="#contact" class="btn btn-primary" data-edit data-key="herobtn">Contact Us</a>
+<!-- HERO -->
+<section class="hero" style="padding-top: 0px;">
+  <div class="hero-ornament"></div>
+  <svg class="lotus" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 52 C20 40 10 30 16 18 C20 10 28 8 32 14 C36 8 44 10 48 18 C54 30 44 40 32 52Z" stroke="#C9A96E" stroke-width="1.2" fill="none"></path>
+    <path d="M32 52 C26 38 22 26 26 16" stroke="#C9A96E" stroke-width="0.8" fill="none"></path>
+    <path d="M32 52 C38 38 42 26 38 16" stroke="#C9A96E" stroke-width="0.8" fill="none"></path>
+    <path d="M16 32 C24 28 32 30 40 28 C48 26 54 30 48 18" stroke="#C9A96E" stroke-width="0.7" fill="none" opacity="0.5"></path>
+    <line x1="32" y1="52" x2="32" y2="58" stroke="#C9A96E" stroke-width="1"></line>
+    <ellipse cx="32" cy="60" rx="6" ry="1.5" stroke="#C9A96E" stroke-width="0.8" fill="none" opacity="0.4"></ellipse>
+  </svg>
+  <p class="hero-eyebrow"><span style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; font-weight: 600; letter-spacing: 2.88px; text-align: start; text-transform: none;">Pattaya Sweetheart&nbsp;</span>Pattdaya</p>
+  <h1>Renting a Girlfriend</h1>
+  <p class="hero-tagline"><br></p>
+  <div class="hero-actions">
+    <a href="#booking" class="btn-primary">Book a Treatment</a>
+    <a href="#about" class="btn-outline">About Us</a>
   </div>
-</header>
-
-<div class="mark">&#10042; &#10042; &#10042;</div>
-
-<section id="about" class="about reveal">
-  <div class="wrap inner">
-    <div class="label" data-edit data-key="aboutlabel">Our Story</div>
-    <h2 class="sec-title" data-edit data-key="abouttitle">A quiet place to <em>breathe again</em></h2>
-    <p data-edit data-key="about1">Tell visitors who you are. How long have you practiced? What tradition do you follow?</p>
-    <p data-edit data-key="about2">Mention what international guests love &mdash; English-speaking therapists, a peaceful setting, authentic technique.</p>
-    <p data-edit data-key="about3">Add a closing line about the experience guests can expect.</p>
-  </div>
-</section>
-
-<section class="quote reveal">
-  <div class="wrap">
-    <blockquote>
-      <span data-edit data-key="quote">Place a calming quote or your spa's philosophy here &mdash; something guests will remember.</span>
-      <span class="by">&mdash; <span data-edit data-key="motto">Your Motto</span></span>
-    </blockquote>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
   </div>
 </section>
 
-<section id="contact" class="contact reveal">
-  <div class="wrap">
-    <div class="label" data-edit data-key="contactlabel">Visit Us</div>
-    <h2 class="sec-title" data-edit data-key="contacttitle">Reserve your <em>time to unwind</em></h2>
-    <p style="max-width:480px;margin:0 auto;color:var(--soft)" data-edit data-key="contactline">One inviting line &mdash; e.g. walk-ins welcome, or book ahead to secure your time.</p>
-
-    <div class="info">
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-text">
+    <p class="section-eyebrow"><br></p>
+    <h2>Hello everyone If you want to find a girl you like for travel or as a private tour guide, 2 weeks, 3 months, or 6 months is possible or doing&nbsp; private massage.&nbsp; But the places for traveling&nbsp; only in Thailand and Laos,&nbsp; &nbsp;Especially for who wants to travel&nbsp; in Laos , Starting from Vientiane.<br>Most of these girls come from rural areas and work in factories or restaurants; they aren't girls who work in the bar.&nbsp; They want to have new experiences, especially wanting to have a foreign boyfriend or husband.&nbsp; Especially in Laos</h2>
+    <p>With dating apps, clubs, and bars, it's not hard to meet single Thai girls these days.&nbsp; But if you're looking for something different than a one-night stand or getting married to a Thai woman, things can get more complicated.&nbsp; Many single men who come to Thailand are not looking for a serious relationship.&nbsp; They are looking for something in the middle.&nbsp; They want to find a Thai holiday girlfriend and get the most from their vacation in Thailand.&nbsp; They are interested in finding a beautiful Thai girl who can be their sexy travel companion for their entire holiday.&nbsp; The idea is to develop intimacy and spend quality time while they are in the Kingdom.&nbsp; And there are no websites, agencies, or services for that.&nbsp; Sure you can try a Thai dating site, but it's very hard to meet a Thai girl online that have an idea how she looks and behave in real life.</p>
+    <p><br></p>
+    <div class="about-stats">
       <div>
-        <h4 data-edit data-key="mobilelabel">Mobile</h4>
-        <p data-edit data-key="mobile">+66 0 0000 0000</p>
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Years Experience</div>
       </div>
       <div>
-        <h4 data-edit data-key="whatsapplabel">WhatsApp</h4>
-        <p data-edit data-key="whatsapp">+66 0 0000 0000</p>
+        <div class="stat-num">5,000+</div>
+        <div class="stat-label">Happy Guests</div>
       </div>
-    </div>
-
-    <div class="hours">
-      <span data-edit data-key="hours">OPEN 24 HOURS &middot; EVERY DAY</span>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Treatments</div>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="mark">&#10042;</div>
-    <div class="copy">&copy; 2025 &middot; Traditional Thai Massage</div>
+<!-- BOOKING CTA -->
+<section class="booking" id="booking">
+  <p class="section-eyebrow"><br></p>
+  <h2>Ready to <em>Relax</em>?</h2>
+  <p>Walk-ins welcome · Reservations recommended</p>
+  <div class="booking-options">
+    <div class="booking-option">
+      <div class="booking-option-label">WhatsApp</div>
+      <div class="booking-option-title">+66 XX XXX XXXX</div>
+      <div class="booking-option-sub">Chat with us anytime</div>
+    </div>
+    <div class="booking-option">
+      <div class="booking-option-label">Call Us</div>
+      <div class="booking-option-title">+66 XX XXX XXXX</div>
+      <div class="booking-option-sub">Open daily 10:00 – 22:00</div>
+    </div>
+    <div class="booking-option">
+      <div class="booking-option-label">Find Us</div>
+      <div class="booking-option-title">Your Address Here</div>
+      <div class="booking-option-sub">Pattaya, Chonburi</div>
+    </div>
   </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-logo"><font color="#9e8e7e" face="Jost, sans-serif"><span style="font-size: 12.48px; font-weight: 300; letter-spacing: normal;">Pattaya Sweetheart</span></font></div>
+  <div class="footer-info">Pattaya Sweetheart · Pattaya, Chonburi<br>
+    Open Daily&nbsp; Tel: +66 XX XXX XXXX
+  </div>
+  <div class="footer-copy">© 2025&nbsp;<span style="color: rgb(158, 142, 126); font-size: 12.48px;">Pattaya Sweetheart</span>. All rights reserved.</div>
 </footer>
 
-<!-- ===== EDITOR BAR ===== -->
-<div class="editbar">
-  <div class="msg" id="ebMsg">&#128221; &#3585;&#3604; <b>Edit</b> &#3648;&#3614;&#3639;&#3656;&#3629;&#3649;&#3585;&#3657;&#3586;&#3657;&#3629;&#3588;&#3623;&#3634;&#3617;&#3651;&#3609;&#3627;&#3609;&#3657;&#3634;&#3648;&#3623;&#3655;&#3610;</div>
-  <div class="actions">
-    <button class="eb-btn eb-edit" id="btnEdit">&#9998; Edit</button>
-    <button class="eb-btn eb-save" id="btnSave">&#10003; Save</button>
-    <button class="eb-btn eb-reset" id="btnReset">Reset</button>
-  </div>
-</div>
-<div class="toast" id="toast">Saved!</div>
+<div id="goog-gt-tt" class="VIpgJd-yAWNEb-L7lbkb skiptranslate" style="border-radius: 12px; margin: 0 0 0 -23px; padding: 0; font-family: 'Google Sans', Arial, sans-serif;" data-id=""><div id="goog-gt-vt" class="VIpgJd-yAWNEb-hvhgNd"><div class="VIpgJd-yAWNEb-hvhgNd-Ud7fr"><img src="https://fonts.gstatic.com/s/i/productlogos/translate/v14/24px.svg" width="24" height="24" alt=""><div class=" VIpgJd-yAWNEb-hvhgNd-IuizWc-i3jM8c " dir="ltr">Original text</div></div><div class="VIpgJd-yAWNEb-hvhgNd-k77Iif"><div id="goog-gt-original-text" class="VIpgJd-yAWNEb-nVMfcd-fmcmS VIpgJd-yAWNEb-hvhgNd-axAV1"></div></div><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid ltr"><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid-B7I4Od ltr" dir="ltr"><div class="VIpgJd-yAWNEb-hvhgNd-UTujCb">Rate this translation</div><div class="VIpgJd-yAWNEb-hvhgNd-eO9mKe">Your feedback will be used to help improve Google Translate</div></div><div class="VIpgJd-yAWNEb-hvhgNd-xgov5 ltr"><button id="goog-gt-thumbUpButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Good translation" aria-label="Good translation" aria-pressed="false"><span id="goog-gt-thumbUpIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7H2v13h16c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM7 18H4V9h3v9zm14-7l-3 7H9V8l4.34-4.34L12 9h9v2z"></path></svg></span><span id="goog-gt-thumbUpIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7v13h11c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM5 7H1v13h4V7z"></path></svg></span></button><button id="goog-gt-thumbDownButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Poor translation" aria-label="Poor translation" aria-pressed="false"><span id="goog-gt-thumbDownIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7h5V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zM17 6h3v9h-3V6zM3 13l3-7h9v10l-4.34 4.34L12 15H3v-2z"></path></svg></span><span id="goog-gt-thumbDownIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zm16 0h4V4h-4v13z"></path></svg></span></button></div></div><div id="goog-gt-votingHiddenPane" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><form id="goog-gt-votingForm" action="//translate.googleapis.com/translate_voting?client=te_lib" method="post" target="votingFrame" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><input type="text" name="sl" id="goog-gt-votingInputSrcLang"><input type="text" name="tl" id="goog-gt-votingInputTrgLang"><input type="text" name="query" id="goog-gt-votingInputSrcText"><input type="text" name="gtrans" id="goog-gt-votingInputTrgText"><input type="text" name="vote" id="goog-gt-votingInputVote"></form><iframe name="votingFrame" frameborder="0"></iframe></div></div></div>
 
-<script>
-  var STORE='thaiMassageContent';
-  var fields=document.querySelectorAll('[data-edit]');
 
-  // load saved content
-  function load(){
-    var data={};
-    try{data=JSON.parse(localStorage.getItem(STORE))||{};}catch(e){}
-    fields.forEach(function(el){
-      var k=el.getAttribute('data-key');
-      if(data[k]!==undefined) el.innerHTML=data[k];
-    });
-  }
-  load();
-
-  var body=document.body;
-  var msg=document.getElementById('ebMsg');
-
-  document.getElementById('btnEdit').onclick=function(){
-    body.classList.add('editing');
-    fields.forEach(function(el){el.setAttribute('contenteditable','true');});
-    msg.innerHTML='&#9998; &#3588;&#3621;&#3636;&#3585;&#3607;&#3637;&#3656;&#3586;&#3657;&#3629;&#3588;&#3623;&#3634;&#3617;&#3651;&#3604;&#3585;&#3655;&#3652;&#3604;&#3657; &#3649;&#3621;&#3657;&#3623;&#3614;&#3636;&#3617;&#3614;&#3660;&#3607;&#3633;&#3610;&#3652;&#3604;&#3657;&#3648;&#3621;&#3618; &#8212; &#3648;&#3626;&#3619;&#3655;&#3592;&#3649;&#3621;&#3657;&#3623;&#3585;&#3604; <b>Save</b>';
-    fields[0].focus();
-  };
-
-  document.getElementById('btnSave').onclick=function(){
-    var data={};
-    fields.forEach(function(el){
-      el.removeAttribute('contenteditable');
-      data[el.getAttribute('data-key')]=el.innerHTML;
-    });
-    try{localStorage.setItem(STORE,JSON.stringify(data));}catch(e){}
-    body.classList.remove('editing');
-    msg.innerHTML='&#128221; &#3585;&#3604; <b>Edit</b> &#3648;&#3614;&#3639;&#3656;&#3629;&#3649;&#3585;&#3657;&#3586;&#3657;&#3629;&#3588;&#3623;&#3634;&#3617;&#3651;&#3609;&#3627;&#3609;&#3657;&#3634;&#3648;&#3623;&#3655;&#3610;';
-    var t=document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(function(){t.classList.remove('show');},1800);
-  };
-
-  document.getElementById('btnReset').onclick=function(){
-    if(confirm('Reset all text back to the original placeholders?')){
-      localStorage.removeItem(STORE);
-      location.reload();
-    }
-  };
-
-  // reveal sections on scroll
-  var io=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
-  },{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
-</script>
-
-</body>
-</html>
+</body></html>
