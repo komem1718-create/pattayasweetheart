@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" class=""><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOUR SPA NAME — Traditional Thai Spa, Pattaya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A96E; --deep: #1C1A17; --earth: #3D3228;
+      --warm: #F7F0E6; --muted: #9E8E7E; --accent: #7A5C3A;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--deep); color: var(--warm); font-weight: 300; }
+
+    /* EDIT MODE */
+    .edit-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: #111; border-bottom: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 2rem; gap: 1rem;
+    }
+    .edit-bar-left { display: flex; align-items: center; gap: 1rem; }
+    .edit-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .edit-hint { font-size: 0.7rem; color: var(--muted); }
+    .btn-save {
+      padding: 0.5rem 1.6rem; background: var(--gold); color: #111;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      border: none; cursor: pointer; font-family: 'Jost', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .btn-save:hover { opacity: 0.85; }
+
+    /* editable elements highlight on hover */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    [contenteditable="true"]:hover {
+      background: rgba(201,169,110,0.08);
+      cursor: text;
+    }
+    [contenteditable="true"]:focus {
+      background: rgba(201,169,110,0.13);
+      box-shadow: 0 0 0 1px rgba(201,169,110,0.4);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 42px; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: linear-gradient(to bottom, rgba(28,26,23,0.95), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(28,26,23,0.97); }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--gold); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--warm); text-decoration: none; opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-book {
+      font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 0.55rem 1.5rem; border: 1px solid var(--gold);
+      color: var(--gold); text-decoration: none; transition: all 0.25s;
+    }
+    .nav-book:hover { background: var(--gold); color: var(--deep); }
+
+    /* HERO */
+    .hero {
+      height: 100vh; min-height: 600px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #2a1f14 0%, #1C1A17 50%, #0f0d0b 100%);
+      padding-top: 80px;
+    }
+    .hero-ornament {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 520px; height: 520px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .lotus { width: 64px; margin-bottom: 1.8rem; opacity: 0.75; animation: floatUp 1.2s ease both; }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+      animation: floatUp 1s 0.2s ease both; opacity: 0;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: 0.04em;
+      animation: floatUp 1s 0.35s ease both; opacity: 0;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-tagline {
+      margin-top: 1.4rem; font-size: 0.92rem; letter-spacing: 0.12em; color: var(--muted);
+      animation: floatUp 1s 0.5s ease both; opacity: 0;
+    }
+    .hero-actions {
+      margin-top: 2.8rem; display: flex; gap: 1.2rem;
+      animation: floatUp 1s 0.65s ease both; opacity: 0;
+    }
+    .btn-primary {
+      padding: 0.85rem 2.4rem; background: var(--gold); color: var(--deep);
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline {
+      padding: 0.85rem 2.4rem; border: 1px solid rgba(201,169,110,0.5);
+      color: var(--warm); font-size: 0.78rem; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none; transition: all 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); animation: floatUp 1s 1s ease both; opacity: 0;
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: var(--gold); opacity: 0.5;
+      animation: scrollPulse 2s 1.5s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50% { transform: scaleY(0.5); opacity: 1; }
+    }
+
+    /* ABOUT */
+    .about { display: block; }
+    .about-text {
+      padding: 5rem 8rem; display: flex; flex-direction: column; align-items: center;
+      text-align: center; background: var(--earth);
+    }
+    .section-eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .about-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300; line-height: 1.2; margin-bottom: 1.6rem;
+    }
+    .about-text h2 em { font-style: italic; color: var(--gold); }
+    .about-text p {
+      font-size: 0.92rem; line-height: 1.85; color: rgba(247,240,230,0.75); margin-bottom: 1rem;
+    }
+    .about-stats {
+      display: flex; gap: 2.5rem; margin-top: 2.5rem;
+      padding-top: 2rem; border-top: 1px solid rgba(201,169,110,0.2);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.3rem;
+    }
+
+    /* BOOKING */
+    .booking { padding: 7rem 4rem; text-align: center; background: var(--earth); }
+    .booking h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; margin-bottom: 0.8rem;
+    }
+    .booking h2 em { font-style: italic; color: var(--gold); }
+    .booking > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem; }
+    .booking-options { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .booking-option {
+      padding: 1.5rem 2.5rem; border: 1px solid rgba(201,169,110,0.3);
+      text-align: left; min-width: 220px; transition: border-color 0.25s;
+      text-decoration: none; color: var(--warm); display: block;
+    }
+    .booking-option:hover { border-color: var(--gold); }
+    .booking-option-label {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .booking-option-title { font-size: 1rem; font-weight: 400; }
+    .booking-option-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 3rem 4rem; border-top: 1px solid rgba(201,169,110,0.15);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600; color: var(--gold); letter-spacing: 0.1em;
+    }
+    .footer-info { font-size: 0.78rem; color: var(--muted); line-height: 1.8; }
+    .footer-copy { font-size: 0.72rem; color: rgba(158,142,126,0.5); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; top: 42px; }
+      .nav-links { display: none; }
+      .about-text { padding: 3rem 2rem; }
+      .booking { padding: 4rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; text-align: center; }
+    }
+  </style>
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.zZZZhVqDDCw.L.W.O/am=BBCABg/d=0/rs=AN8SPfrkE3FGhJXryfBRpx1gYoqebAENWQ/m=el_main_css"></head>
+<body>
+
+<!-- EDIT BAR -->
+
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled" style="top: 0px;">
+  <span class="nav-logo">Pattaya Sweetheart</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#booking">Book Now</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-book">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top: 0px;">
+  <div class="hero-ornament"></div>
+  <svg class="lotus" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 52 C20 40 10 30 16 18 C20 10 28 8 32 14 C36 8 44 10 48 18 C54 30 44 40 32 52Z" stroke="#C9A96E" stroke-width="1.2" fill="none"></path>
+    <path d="M32 52 C26 38 22 26 26 16" stroke="#C9A96E" stroke-width="0.8" fill="none"></path>
+    <path d="M32 52 C38 38 42 26 38 16" stroke="#C9A96E" stroke-width="0.8" fill="none"></path>
+    <path d="M16 32 C24 28 32 30 40 28 C48 26 54 30 48 18" stroke="#C9A96E" stroke-width="0.7" fill="none" opacity="0.5"></path>
+    <line x1="32" y1="52" x2="32" y2="58" stroke="#C9A96E" stroke-width="1"></line>
+    <ellipse cx="32" cy="60" rx="6" ry="1.5" stroke="#C9A96E" stroke-width="0.8" fill="none" opacity="0.4"></ellipse>
+  </svg>
+  <p class="hero-eyebrow"><span style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; font-weight: 600; letter-spacing: 2.88px; text-align: start; text-transform: none;">Pattaya Sweetheart&nbsp;</span>Pattdaya</p>
+  <h1>Renting a Girlfriend</h1>
+  <p class="hero-tagline"><br></p>
+  <div class="hero-actions">
+    <a href="#booking" class="btn-primary">Book a Treatment</a>
+    <a href="#about" class="btn-outline">About Us</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-text">
+    <p class="section-eyebrow"><br></p>
+    <h2>Hello everyone If you want to find a girl you like for travel or as a private tour guide, 2 weeks, 3 months, or 6 months is possible or doing&nbsp; private massage.&nbsp; But the places for traveling&nbsp; only in Thailand and Laos,&nbsp; &nbsp;Especially for who wants to travel&nbsp; in Laos , Starting from Vientiane.<br>Most of these girls come from rural areas and work in factories or restaurants; they aren't girls who work in the bar.&nbsp; They want to have new experiences, especially wanting to have a foreign boyfriend or husband.&nbsp; Especially in Laos</h2>
+    <p>With dating apps, clubs, and bars, it's not hard to meet single Thai girls these days.&nbsp; But if you're looking for something different than a one-night stand or getting married to a Thai woman, things can get more complicated.&nbsp; Many single men who come to Thailand are not looking for a serious relationship.&nbsp; They are looking for something in the middle.&nbsp; They want to find a Thai holiday girlfriend and get the most from their vacation in Thailand.&nbsp; They are interested in finding a beautiful Thai girl who can be their sexy travel companion for their entire holiday.&nbsp; The idea is to develop intimacy and spend quality time while they are in the Kingdom.&nbsp; And there are no websites, agencies, or services for that.&nbsp; Sure you can try a Thai dating site, but it's very hard to meet a Thai girl online that have an idea how she looks and behave in real life.</p>
+    <p><br></p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">5,000+</div>
+        <div class="stat-label">Happy Guests</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Treatments</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="booking" id="booking">
+  <p class="section-eyebrow"><br></p>
+  <h2>Ready to <em>Relax</em>?</h2>
+  <p>Walk-ins welcome · Reservations recommended</p>
+  <div class="booking-options">
+    <div class="booking-option">
+      <div class="booking-option-label">WhatsApp</div>
+      <div class="booking-option-title">+66 XX XXX XXXX</div>
+      <div class="booking-option-sub">Chat with us anytime</div>
+    </div>
+    <div class="booking-option">
+      <div class="booking-option-label">Call Us</div>
+      <div class="booking-option-title">+66 XX XXX XXXX</div>
+      <div class="booking-option-sub">Open daily 10:00 – 22:00</div>
+    </div>
+    <div class="booking-option">
+      <div class="booking-option-label">Find Us</div>
+      <div class="booking-option-title"><span style="color: rgb(201, 169, 110); font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; font-weight: 600; letter-spacing: 2.88px;">Pattaya Sweetheart</span></div>
+      <div class="booking-option-sub">Pattaya, Chonburi</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-logo"><font color="#9e8e7e" face="Jost, sans-serif"><span style="font-size: 12.48px; font-weight: 300; letter-spacing: normal;">Pattaya Sweetheart</span></font></div>
+  <div class="footer-info">Pattaya Sweetheart · Pattaya, Chonburi<br>
+    Open Daily&nbsp; Tel: +66 XX XXX XXXX
+  </div>
+  <div class="footer-copy">© 2025&nbsp;<span style="color: rgb(158, 142, 126); font-size: 12.48px;">Pattaya Sweetheart</span>. All rights reserved.</div>
+</footer>
+
+<div id="goog-gt-tt" class="VIpgJd-yAWNEb-L7lbkb skiptranslate" style="border-radius: 12px; margin: 0 0 0 -23px; padding: 0; font-family: 'Google Sans', Arial, sans-serif;" data-id=""><div id="goog-gt-vt" class="VIpgJd-yAWNEb-hvhgNd"><div class="VIpgJd-yAWNEb-hvhgNd-Ud7fr"><img src="https://fonts.gstatic.com/s/i/productlogos/translate/v14/24px.svg" width="24" height="24" alt=""><div class=" VIpgJd-yAWNEb-hvhgNd-IuizWc-i3jM8c " dir="ltr">Original text</div></div><div class="VIpgJd-yAWNEb-hvhgNd-k77Iif"><div id="goog-gt-original-text" class="VIpgJd-yAWNEb-nVMfcd-fmcmS VIpgJd-yAWNEb-hvhgNd-axAV1"></div></div><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid ltr"><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid-B7I4Od ltr" dir="ltr"><div class="VIpgJd-yAWNEb-hvhgNd-UTujCb">Rate this translation</div><div class="VIpgJd-yAWNEb-hvhgNd-eO9mKe">Your feedback will be used to help improve Google Translate</div></div><div class="VIpgJd-yAWNEb-hvhgNd-xgov5 ltr"><button id="goog-gt-thumbUpButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Good translation" aria-label="Good translation" aria-pressed="false"><span id="goog-gt-thumbUpIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7H2v13h16c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM7 18H4V9h3v9zm14-7l-3 7H9V8l4.34-4.34L12 9h9v2z"></path></svg></span><span id="goog-gt-thumbUpIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7v13h11c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM5 7H1v13h4V7z"></path></svg></span></button><button id="goog-gt-thumbDownButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Poor translation" aria-label="Poor translation" aria-pressed="false"><span id="goog-gt-thumbDownIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7h5V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zM17 6h3v9h-3V6zM3 13l3-7h9v10l-4.34 4.34L12 15H3v-2z"></path></svg></span><span id="goog-gt-thumbDownIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zm16 0h4V4h-4v13z"></path></svg></span></button></div></div><div id="goog-gt-votingHiddenPane" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><form id="goog-gt-votingForm" action="//translate.googleapis.com/translate_voting?client=te_lib" method="post" target="votingFrame" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><input type="text" name="sl" id="goog-gt-votingInputSrcLang"><input type="text" name="tl" id="goog-gt-votingInputTrgLang"><input type="text" name="query" id="goog-gt-votingInputSrcText"><input type="text" name="gtrans" id="goog-gt-votingInputTrgText"><input type="text" name="vote" id="goog-gt-votingInputVote"></form><iframe name="votingFrame" frameborder="0"></iframe></div></div></div>
+
+
+</body></html>
